@@ -148,5 +148,94 @@ namespace Project
                 MessageBox.Show("Пожалуйста, выберите запись для удаления.");
             }
         }
+        /// <summary>
+        /// Обработчик нажатия на кнопку "Поиск".
+        /// </summary>
+        private void OnFindBtnClick(object sender, EventArgs e)
+        {
+            // Получаем значения из текстовых полей
+            string familia = textBoxSurname.Text.Trim();
+            string personName = textBoxName.Text.Trim();
+            string otchestvo = textBoxOtchestvo.Text.Trim();
+            string street = textBoxStreet.Text.Trim();
+            string house = textBoxHouse.Text.Trim();
+            string korpys = textBoxKorpys.Text.Trim();
+            string apartment = textBoxApartment.Text.Trim();
+            string phone = textBoxPhone.Text.Trim();
+
+            // Начинаем строить SQL-запрос
+            string query = "SELECT * FROM Phonebook WHERE 1 = 1"; // Начальный запрос, чтобы все условия можно было добавлять динамически
+
+            // Список параметров для запроса
+            var parameters = new List<NpgsqlParameter>();
+
+            // Добавляем условия поиска по заполненным полям
+            if (!string.IsNullOrWhiteSpace(familia))
+            {
+                query += " AND famillia ILIKE @familia";
+                parameters.Add(new NpgsqlParameter("familia", "%" + familia + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(personName))
+            {
+                query += " AND person_name ILIKE @personName";
+                parameters.Add(new NpgsqlParameter("personName", "%" + personName + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(otchestvo))
+            {
+                query += " AND otchestvo ILIKE @otchestvo";
+                parameters.Add(new NpgsqlParameter("otchestvo", "%" + otchestvo + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(street))
+            {
+                query += " AND street ILIKE @street";
+                parameters.Add(new NpgsqlParameter("street", "%" + street + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(house))
+            {
+                query += " AND house ILIKE @house";
+                parameters.Add(new NpgsqlParameter("house", "%" + house + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(korpys))
+            {
+                query += " AND korpys ILIKE @korpys";
+                parameters.Add(new NpgsqlParameter("korpys", "%" + korpys + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(apartment))
+            {
+                query += " AND apartment ILIKE @apartment";
+                parameters.Add(new NpgsqlParameter("apartment", "%" + apartment + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                query += " AND phone ILIKE @phone";
+                parameters.Add(new NpgsqlParameter("phone", "%" + phone + "%"));
+            }
+
+            // Выполняем запрос
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        // Добавляем все параметры к запросу
+                        cmd.Parameters.AddRange(parameters.ToArray());
+
+                        using (var adapter = new NpgsqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            adapter.Fill(dt);  // Заполнение DataTable данными из базы
+                            dataGridView.DataSource = dt;  // Обновление DataGridView с результатами поиска
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при поиске: {ex.Message}");
+                }
+            }
+        }
+
     }
 }

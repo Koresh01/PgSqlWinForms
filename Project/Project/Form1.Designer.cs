@@ -49,6 +49,7 @@
             textBoxPhone = new TextBox();
             label8 = new Label();
             delBtn = new Button();
+            findBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             SuspendLayout();
@@ -64,7 +65,7 @@
             // 
             // addBtn
             // 
-            addBtn.Location = new Point(669, 242);
+            addBtn.Location = new Point(809, 242);
             addBtn.Name = "addBtn";
             addBtn.Size = new Size(77, 49);
             addBtn.TabIndex = 1;
@@ -202,7 +203,7 @@
             // 
             // delBtn
             // 
-            delBtn.Location = new Point(750, 242);
+            delBtn.Location = new Point(975, 242);
             delBtn.Name = "delBtn";
             delBtn.Size = new Size(77, 49);
             delBtn.TabIndex = 18;
@@ -210,11 +211,22 @@
             delBtn.UseVisualStyleBackColor = true;
             delBtn.Click += OnDeleteBtnClick;
             // 
+            // findBtn
+            // 
+            findBtn.Location = new Point(892, 242);
+            findBtn.Name = "findBtn";
+            findBtn.Size = new Size(77, 49);
+            findBtn.TabIndex = 19;
+            findBtn.Text = "Поиск";
+            findBtn.UseVisualStyleBackColor = true;
+            findBtn.Click += OnFindBtnClick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1064, 681);
+            Controls.Add(findBtn);
             Controls.Add(delBtn);
             Controls.Add(label8);
             Controls.Add(textBoxPhone);
@@ -264,5 +276,6 @@
         private TextBox textBoxPhone;
         private Label label8;
         private Button delBtn;
+        private Button findBtn;
     }
 }
