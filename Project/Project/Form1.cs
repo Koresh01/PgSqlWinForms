@@ -13,23 +13,22 @@ namespace Project
             InitializeComponent();
             // Меняем название таблички:
             tableNameLabel.Text = "Телефонная книга";
-            ShowTable("PhoneBook");
+            curTable = "PhoneBook";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         /// <summary>
         /// Загружает данные на экран.
         /// </summary>
         /// <param name="tableName">Таблица из которой выгружаем данные на экран.</param>
-        private void ShowTable(string tableName)
+        private void ShowTable(DataTable data)
         {
-            try
-            {
-                dataGridView.DataSource = DatabaseManager.GetAllRecords(tableName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}");
-            }
+            dataGridView.DataSource = data;
         }
 
         private void OnAddBtnClick(object sender, EventArgs e)
@@ -50,7 +49,12 @@ namespace Project
                     case "PhoneBook":
                         DatabaseManager.AddRecord(familia, personName, otchestvo, street, house, korpys, apartment, phone);
                         MessageBox.Show("Запись успешно добавлена!");
-                        ShowTable(curTable);
+
+                        // Получаем нужные значения:
+                        DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+                        // Отрисовываем их:
+                        ShowTable(data);
                         break;
                     case "Surnames":
                         MessageBox.Show("Ручное добавление возможно только для таблицы PhoneBook!");
@@ -99,7 +103,12 @@ namespace Project
                     {
                         DatabaseManager.DeleteRecord(id);
                         MessageBox.Show("Запись успешно удалена!");
-                        ShowTable(curTable);
+
+                        // Получаем нужные значения:
+                        DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+                        // Отрисовываем их:
+                        ShowTable(data);
                     }
                     catch (Exception ex)
                     {
@@ -126,7 +135,11 @@ namespace Project
                 string apartment = textBoxApartment.Text.Trim();
                 string phone = textBoxPhone.Text.Trim();
 
-                dataGridView.DataSource = DatabaseManager.FindRecords(familia, personName, otchestvo, street, house, korpys, apartment, phone);
+                // Получаем нужные значения:
+                DataTable data = DatabaseManager.FindRecords(familia, personName, otchestvo, street, house, korpys, apartment, phone);
+
+                // Отрисовываем их:
+                ShowTable(data);
             }
             catch (Exception ex)
             {
@@ -144,10 +157,17 @@ namespace Project
 
 
             // Отрисовываем соответствующую таблицу.
-            ShowTable("PhoneBook");
 
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "PhoneBook";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
+
+            
         }
 
         private void SurnamesBtn_Click(object sender, EventArgs e)
@@ -158,10 +178,15 @@ namespace Project
             tableNameLabel.Text = "Фамилии";
 
             // Отрисовываем соответствующую таблицу.
-            ShowTable("Surnames");
 
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "Surnames";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         private void NamesBtn_Click(object sender, EventArgs e)
@@ -171,11 +196,14 @@ namespace Project
             // Меняем название таблички:
             tableNameLabel.Text = "Имена";
 
-            // Отрисовываем соответствующую таблицу.
-            ShowTable("Names");
-
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "Names";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         private void OtchestvaBtn_Click(object sender, EventArgs e)
@@ -185,11 +213,15 @@ namespace Project
             // Меняем название таблички:
             tableNameLabel.Text = "Отчества";
 
-            // Отрисовываем соответствующую таблицу.
-            ShowTable("Otchestva");
 
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "Otchestva";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         private void StreetsBtn_Click(object sender, EventArgs e)
@@ -199,11 +231,15 @@ namespace Project
             // Меняем название таблички:
             tableNameLabel.Text = "Улицы";
 
-            // Отрисовываем соответствующую таблицу.
-            ShowTable("Streets");
 
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "Streets";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         private void HousesBtn_Click(object sender, EventArgs e)
@@ -213,11 +249,14 @@ namespace Project
             // Меняем название таблички:
             tableNameLabel.Text = "Дома";
 
-            // Отрисовываем соответствующую таблицу.
-            ShowTable("Houses");
-
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "Houses";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         private void CorpsBtn_Click(object sender, EventArgs e)
@@ -227,11 +266,14 @@ namespace Project
             // Меняем название таблички:
             tableNameLabel.Text = "Корпуса";
 
-            // Отрисовываем соответствующую таблицу.
-            ShowTable("Corps");
-
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "Corps";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         private void ApartamentsBtn_Click(object sender, EventArgs e)
@@ -241,11 +283,14 @@ namespace Project
             // Меняем название таблички:
             tableNameLabel.Text = "Комнаты";
 
-            // Отрисовываем соответствующую таблицу.
-            ShowTable("Apartments");
-
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "Apartments";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         private void TelephoneNumbersBtn_Click(object sender, EventArgs e)
@@ -255,11 +300,14 @@ namespace Project
             // Меняем название таблички:
             tableNameLabel.Text = "Телефоны";
 
-            // Отрисовываем соответствующую таблицу.
-            ShowTable("Phones");
-
             // Устанавливаем название текущей отображаемой таблицы:
             curTable = "Phones";
+
+            // Получаем нужные значения:
+            DataTable data = DatabaseManager.GetAllRecords(curTable);
+
+            // Отрисовываем их:
+            ShowTable(data);
         }
 
         #endregion
