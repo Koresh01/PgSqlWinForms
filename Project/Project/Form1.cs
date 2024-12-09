@@ -93,5 +93,60 @@ namespace Project
                 }
             }
         }
+
+        /// <summary>
+        /// Обработчик нажатия на кнопку "Удалить".
+        /// </summary>
+        private void OnDeleteBtnClick(object sender, EventArgs e)
+        {
+            // Проверяем, выбрана ли строка в DataGridView
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                // Получаем выбранную строку
+                var selectedRow = dataGridView.SelectedRows[0];
+
+                // Получаем id из выбранной строки (предполагаем, что id - это первый столбец)
+                int id = Convert.ToInt32(selectedRow.Cells["id"].Value);
+
+                // Запрашиваем подтверждение удаления
+                var result = MessageBox.Show($"Вы уверены, что хотите удалить запись с ID {id}?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                // Если пользователь подтверждает удаление
+                if (result == DialogResult.Yes)
+                {
+                    // SQL запрос для удаления записи по id
+                    string query = "DELETE FROM Phonebook WHERE id = @id";
+
+                    using (var conn = new NpgsqlConnection(connectionString))
+                    {
+                        try
+                        {
+                            conn.Open();
+                            using (var cmd = new NpgsqlCommand(query, conn))
+                            {
+                                // Добавляем параметр id в запрос
+                                cmd.Parameters.AddWithValue("id", id);
+
+                                // Выполняем запрос
+                                cmd.ExecuteNonQuery();
+
+                                MessageBox.Show("Запись успешно удалена!");
+
+                                // Обновляем таблицу
+                                ShowTable();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка при удалении записи: {ex.Message}");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, выберите запись для удаления.");
+            }
+        }
     }
 }

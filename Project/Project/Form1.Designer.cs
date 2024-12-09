@@ -48,6 +48,7 @@
             label7 = new Label();
             textBoxPhone = new TextBox();
             label8 = new Label();
+            delBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             SuspendLayout();
@@ -199,11 +200,22 @@
             label8.TabIndex = 17;
             label8.Text = "Телефон";
             // 
+            // delBtn
+            // 
+            delBtn.Location = new Point(750, 242);
+            delBtn.Name = "delBtn";
+            delBtn.Size = new Size(77, 49);
+            delBtn.TabIndex = 18;
+            delBtn.Text = "Удалить";
+            delBtn.UseVisualStyleBackColor = true;
+            delBtn.Click += OnDeleteBtnClick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1064, 681);
+            Controls.Add(delBtn);
             Controls.Add(label8);
             Controls.Add(textBoxPhone);
             Controls.Add(label7);
@@ -251,5 +263,6 @@
         private Label label7;
         private TextBox textBoxPhone;
         private Label label8;
+        private Button delBtn;
     }
 }
