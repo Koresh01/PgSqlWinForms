@@ -1,6 +1,8 @@
+using Microsoft.VisualBasic.Devices;
 using Npgsql;
 using System;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Project
@@ -101,7 +103,7 @@ namespace Project
                 {
                     try
                     {
-                        DatabaseManager.DeleteRecord(id);
+                        DatabaseManager.DeleteRecord(curTable, id);
                         MessageBox.Show("Запись успешно удалена!");
 
                         // Получаем нужные значения:

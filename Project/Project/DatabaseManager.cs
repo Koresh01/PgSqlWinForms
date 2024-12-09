@@ -43,6 +43,14 @@ namespace Project
             return dt;
         }
         #endregion
+
+
+
+
+
+
+
+
         #region Формирование SQL запроса
         /// <summary>
         /// Добавляет новую запись в таблицу PhoneBook с использованием CTE и обработкой уникальных значений.
@@ -134,85 +142,18 @@ namespace Project
         /// <summary>
         /// Удаляет запись из таблицы Phonebook.
         /// </summary>
-        public static void DeleteRecord(int id)
+        public static void DeleteRecord(string tableName, int id)
         {
-            using (var conn = new NpgsqlConnection(connectionString))
+            string query = $"DELETE FROM {tableName} WHERE id = @id";
+            var parameters = new List<NpgsqlParameter>
             {
-                conn.Open();
-                using (var transaction = conn.BeginTransaction())
-                {
-                    try
-                    {
-                        // 1. Удаление записи из PhoneBook
-                        string queryPhoneBook = "DELETE FROM PhoneBook WHERE id = @id";
-                        var parametersPhoneBook = new List<NpgsqlParameter>
-                {
-                    new NpgsqlParameter("id", id)
-                };
-                        ExecuteQueryWithTransaction(queryPhoneBook, parametersPhoneBook, conn, transaction);
+                new NpgsqlParameter("id", id)
+            };
 
-                        // 2. Проверка и удаление ненужных значений из справочных таблиц
-                        DeleteFromReferenceTableIfUnused("Surnames", "id", conn, transaction);
-                        DeleteFromReferenceTableIfUnused("Names", "id", conn, transaction);
-                        DeleteFromReferenceTableIfUnused("Otchestva", "id", conn, transaction);
-                        DeleteFromReferenceTableIfUnused("Streets", "id", conn, transaction);
-                        DeleteFromReferenceTableIfUnused("Houses", "id", conn, transaction);
-                        DeleteFromReferenceTableIfUnused("Corps", "id", conn, transaction);
-                        DeleteFromReferenceTableIfUnused("Apartments", "id", conn, transaction);
-                        DeleteFromReferenceTableIfUnused("Phones", "id", conn, transaction);
-
-                        // Завершаем транзакцию
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        // В случае ошибки откатываем изменения
-                        transaction.Rollback();
-                        throw new Exception("Ошибка при удалении записи.", ex);
-                    }
-                }
-            }
+            ExecuteQuery(query, parameters);
         }
 
-        /// <summary>
-        /// Выполняет удаление записи из справочной таблицы, если она не используется в других записях PhoneBook.
-        /// </summary>
-        private static void DeleteFromReferenceTableIfUnused(string tableName, string columnName, NpgsqlConnection conn, NpgsqlTransaction transaction)
-        {
-            // Проверяем, используется ли это значение в PhoneBook
-            string checkQuery = $@"
-        SELECT COUNT(*) 
-        FROM PhoneBook pb
-        LEFT JOIN {tableName} t ON pb.{columnName} = t.id
-        WHERE t.id IS NOT NULL";
 
-            using (var cmd = new NpgsqlCommand(checkQuery, conn, transaction))
-            {
-                int count = Convert.ToInt32(cmd.ExecuteScalar());
-                if (count == 0)
-                {
-                    // Если не используется, удаляем значение из справочной таблицы
-                    string deleteQuery = $"DELETE FROM {tableName} WHERE id = @id";
-                    using (var deleteCmd = new NpgsqlCommand(deleteQuery, conn, transaction))
-                    {
-                        deleteCmd.Parameters.AddWithValue("id", columnName);
-                        deleteCmd.ExecuteNonQuery();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Выполняет запрос в рамках транзакции для удаления данных.
-        /// </summary>
-        private static void ExecuteQueryWithTransaction(string query, List<NpgsqlParameter> parameters, NpgsqlConnection conn, NpgsqlTransaction transaction)
-        {
-            using (var cmd = new NpgsqlCommand(query, conn, transaction))
-            {
-                cmd.Parameters.AddRange(parameters.ToArray());
-                cmd.ExecuteNonQuery();
-            }
-        }
 
         /// <summary>
         /// Поиск записей в таблице Phonebook по заданным критериям.
