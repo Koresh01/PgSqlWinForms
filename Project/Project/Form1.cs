@@ -7,17 +7,20 @@ namespace Project
 {
     public partial class Form1 : Form
     {
+        string curTable;
         public Form1()
         {
             InitializeComponent();
-            ShowTable();
+            // Меняем название таблички:
+            tableNameLabel.Text = "Телефонная книга";
+            ShowTable("PhoneBook");
         }
 
         /// <summary>
         /// Загружает данные на экран.
         /// </summary>
         /// <param name="tableName">Таблица из которой выгружаем данные на экран.</param>
-        private void ShowTable(string tableName = "Phonebook")
+        private void ShowTable(string tableName)
         {
             try
             {
@@ -42,9 +45,31 @@ namespace Project
                 string apartment = textBoxApartment.Text;
                 string phone = textBoxPhone.Text;
 
-                DatabaseManager.AddRecord(familia, personName, otchestvo, street, house, korpys, apartment, phone);
+                // смотрим какая сейчас таблица активна у пользователя:
+                switch (curTable) {
+                    case "PhoneBook":
+                        DatabaseManager.AddRecord(familia, personName, otchestvo, street, house, korpys, apartment, phone);
+                        break;
+                    case "Surnames":
+                        break;
+                    case "Names":
+                        break;
+                    case "Otchestva":
+                        break;
+                    case "Streets":
+                        break;
+                    case "Houses":
+                        break;
+                    case "Corps":
+                        break;
+                    case "Apartments":
+                        break;
+                    case "Phones":
+                        break;
+                }
+                
                 MessageBox.Show("Запись успешно добавлена!");
-                ShowTable();
+                ShowTable(curTable);
             }
             catch (Exception ex)
             {
@@ -67,7 +92,7 @@ namespace Project
                     {
                         DatabaseManager.DeleteRecord(id);
                         MessageBox.Show("Запись успешно удалена!");
-                        ShowTable();
+                        ShowTable(curTable);
                     }
                     catch (Exception ex)
                     {
@@ -113,6 +138,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("PhoneBook");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "PhoneBook";
         }
 
         private void SurnamesBtn_Click(object sender, EventArgs e)
@@ -124,6 +152,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("Surnames");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "Surnames";
         }
 
         private void NamesBtn_Click(object sender, EventArgs e)
@@ -135,6 +166,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("Names");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "Names";
         }
 
         private void OtchestvaBtn_Click(object sender, EventArgs e)
@@ -146,6 +180,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("Otchestva");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "Otchestva";
         }
 
         private void StreetsBtn_Click(object sender, EventArgs e)
@@ -157,6 +194,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("Streets");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "Streets";
         }
 
         private void HousesBtn_Click(object sender, EventArgs e)
@@ -168,6 +208,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("Houses");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "Houses";
         }
 
         private void CorpsBtn_Click(object sender, EventArgs e)
@@ -179,6 +222,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("Corps");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "Corps";
         }
 
         private void ApartamentsBtn_Click(object sender, EventArgs e)
@@ -190,6 +236,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("Apartments");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "Apartments";
         }
 
         private void TelephoneNumbersBtn_Click(object sender, EventArgs e)
@@ -201,6 +250,9 @@ namespace Project
 
             // Отрисовываем соответствующую таблицу.
             ShowTable("Phones");
+
+            // Устанавливаем название текущей отображаемой таблицы:
+            curTable = "Phones";
         }
 
         #endregion

@@ -45,28 +45,88 @@ namespace Project
         #endregion
         #region Формирование SQL запроса
         /// <summary>
-        /// Добавляет новую запись в таблицу Phonebook.
+        /// Добавляет новую запись в таблицу PhoneBook с использованием CTE и обработкой уникальных значений.
         /// </summary>
         public static void AddRecord(string familia, string personName, string otchestvo, string street, string house,
                                       string korpys, string apartment, string phone)
         {
-            string query = @"INSERT INTO Phonebook (famillia, person_name, otchestvo, street, house, korpys, apartment, phone)
-                             VALUES (@famillia, @person_name, @otchestvo, @street, @house, @korpys, @apartment, @phone)";
+            string query = @"
+                            WITH 
+                            inserted_surname AS (
+                                INSERT INTO Surnames(value) VALUES (@surname)
+                                ON CONFLICT (value) DO UPDATE SET value = EXCLUDED.value
+                                RETURNING id
+                            ),
+                            inserted_name AS (
+                                INSERT INTO Names(value) VALUES (@name)
+                                ON CONFLICT (value) DO UPDATE SET value = EXCLUDED.value
+                                RETURNING id
+                            ),
+                            inserted_otchestvo AS (
+                                INSERT INTO Otchestva(value) VALUES (@otchestvo)
+                                ON CONFLICT (value) DO UPDATE SET value = EXCLUDED.value
+                                RETURNING id
+                            ),
+                            inserted_street AS (
+                                INSERT INTO Streets(value) VALUES (@street)
+                                ON CONFLICT (value) DO UPDATE SET value = EXCLUDED.value
+                                RETURNING id
+                            ),
+                            inserted_house AS (
+                                INSERT INTO Houses(value) VALUES (@house)
+                                ON CONFLICT (value) DO UPDATE SET value = EXCLUDED.value
+                                RETURNING id
+                            ),
+                            inserted_corpus AS (
+                                INSERT INTO Corps(value) VALUES (@korpus)
+                                ON CONFLICT (value) DO UPDATE SET value = EXCLUDED.value
+                                RETURNING id
+                            ),
+                            inserted_apartment AS (
+                                INSERT INTO Apartments(value) VALUES (@apartment)
+                                ON CONFLICT (value) DO UPDATE SET value = EXCLUDED.value
+                                RETURNING id
+                            ),
+                            inserted_phone AS (
+                                INSERT INTO Phones(value) VALUES (@phone)
+                                ON CONFLICT (value) DO NOTHING
+                                RETURNING id
+                            )
+                            INSERT INTO PhoneBook(surname_id, name_id, patronymic_id, street_id, house_id, korpus_id, apartment_id, phone_id)
+                            VALUES (
+                                (SELECT id FROM inserted_surname),
+                                (SELECT id FROM inserted_name),
+                                (SELECT id FROM inserted_otchestvo),
+                                (SELECT id FROM inserted_street),
+                                (SELECT id FROM inserted_house),
+                                (SELECT id FROM inserted_corpus),
+                                (SELECT id FROM inserted_apartment),
+                                (SELECT id FROM inserted_phone)
+                            );";
 
             var parameters = new List<NpgsqlParameter>
             {
-                new NpgsqlParameter("famillia", familia),
-                new NpgsqlParameter("person_name", personName),
+                new NpgsqlParameter("surname", familia),
+                new NpgsqlParameter("name", personName),
                 new NpgsqlParameter("otchestvo", (object)otchestvo ?? DBNull.Value),
                 new NpgsqlParameter("street", (object)street ?? DBNull.Value),
                 new NpgsqlParameter("house", (object)house ?? DBNull.Value),
-                new NpgsqlParameter("korpys", (object)korpys ?? DBNull.Value),
+                new NpgsqlParameter("korpus", (object)korpys ?? DBNull.Value),
                 new NpgsqlParameter("apartment", (object)apartment ?? DBNull.Value),
                 new NpgsqlParameter("phone", phone)
             };
 
-            ExecuteQuery(query, parameters);
+            try
+            {
+                ExecuteQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                // Логируем ошибку или обрабатываем её, если нужно
+                throw new Exception("Ошибка при добавлении записи в PhoneBook.", ex);
+            }
         }
+
 
         /// <summary>
         /// Удаляет запись из таблицы Phonebook.
