@@ -1,0 +1,17 @@
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\bin\Debug\net6.0-windows\Project.exe
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\bin\Debug\net6.0-windows\Project.deps.json
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\bin\Debug\net6.0-windows\Project.runtimeconfig.json
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\bin\Debug\net6.0-windows\Project.dll
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\bin\Debug\net6.0-windows\Project.pdb
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.csproj.AssemblyReference.cache
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.Form1.resources
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.csproj.GenerateResource.cache
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.AssemblyInfoInputs.cache
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.AssemblyInfo.cs
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.csproj.CoreCompileInputs.cache
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.dll
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\refint\Project.dll
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.pdb
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.genruntimeconfig.cache
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\ref\Project.dll
