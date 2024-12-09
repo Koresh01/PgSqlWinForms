@@ -23,3 +23,4 @@ C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\bin\Debug\net
 C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\bin\Debug\net6.0-windows\System.Text.Json.dll
 C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\bin\Debug\net6.0-windows\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.csproj.CopyComplete
+C:\Users\KoreshNoyt\Desktop\Skleimin\PgSqlWinForms\Project\Project\obj\Debug\net6.0-windows\Project.Properties.Resources.resources

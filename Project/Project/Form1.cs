@@ -101,5 +101,74 @@ namespace Project
             }
         }
 
+        #region Кнопки меню
+        /// <summary>
+        /// 
+        /// </summary>
+        private void PhoneBook_BtnClick(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Телефонная книга";
+        }
+
+
+
+        private void SurnamesBtn_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Фамилии";
+        }
+
+        private void NamesBtn_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Имена";
+        }
+        #endregion
+
+        private void OtchestvaBtn_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Отчества";
+        }
+
+        private void StreetsBtn_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Улицы";
+        }
+
+        private void HousesBtn_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Дома";
+        }
+
+        private void CorpsBtn_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Корпуса";
+        }
+
+        private void ApartamentsBtn_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Комнаты";
+        }
+
+        private void TelephoneNumbersBtn_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem obj = sender as ToolStripMenuItem;
+
+            tableNameLabel.Text = "Телефоны";
+        }
     }
 }

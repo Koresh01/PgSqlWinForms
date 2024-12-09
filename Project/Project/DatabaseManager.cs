@@ -43,7 +43,7 @@ namespace Project
             return dt;
         }
         #endregion
-        #region Формирование запроса
+        #region Формирование SQL запроса
         /// <summary>
         /// Добавляет новую запись в таблицу Phonebook.
         /// </summary>
