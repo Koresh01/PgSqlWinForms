@@ -49,27 +49,34 @@ namespace Project
                 switch (curTable) {
                     case "PhoneBook":
                         DatabaseManager.AddRecord(familia, personName, otchestvo, street, house, korpys, apartment, phone);
+                        MessageBox.Show("«апись успешно добавлена!");
+                        ShowTable(curTable);
                         break;
                     case "Surnames":
+                        MessageBox.Show("–учное добавление возможно только дл€ таблицы PhoneBook!");
                         break;
                     case "Names":
+                        MessageBox.Show("–учное добавление возможно только дл€ таблицы PhoneBook!");
                         break;
                     case "Otchestva":
+                        MessageBox.Show("–учное добавление возможно только дл€ таблицы PhoneBook!");
                         break;
                     case "Streets":
+                        MessageBox.Show("–учное добавление возможно только дл€ таблицы PhoneBook!");
                         break;
                     case "Houses":
+                        MessageBox.Show("–учное добавление возможно только дл€ таблицы PhoneBook!");
                         break;
                     case "Corps":
+                        MessageBox.Show("–учное добавление возможно только дл€ таблицы PhoneBook!");
                         break;
                     case "Apartments":
+                        MessageBox.Show("–учное добавление возможно только дл€ таблицы PhoneBook!");
                         break;
                     case "Phones":
+                        MessageBox.Show("–учное добавление возможно только дл€ таблицы PhoneBook!");
                         break;
                 }
-                
-                MessageBox.Show("«апись успешно добавлена!");
-                ShowTable(curTable);
             }
             catch (Exception ex)
             {

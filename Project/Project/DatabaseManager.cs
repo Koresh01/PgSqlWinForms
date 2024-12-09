@@ -125,6 +125,9 @@ namespace Project
                 // Логируем ошибку или обрабатываем её, если нужно
                 throw new Exception("Ошибка при добавлении записи в PhoneBook.", ex);
             }
+
+            // сразу вызываем выполнения запроса и возвращаем результат (таблицу)
+            //return ExecuteQuery(query, parameters);
         }
 
 
@@ -133,35 +136,159 @@ namespace Project
         /// </summary>
         public static void DeleteRecord(int id)
         {
-            string query = "DELETE FROM Phonebook WHERE id = @id";
-            var parameters = new List<NpgsqlParameter>
+            using (var conn = new NpgsqlConnection(connectionString))
             {
-                new NpgsqlParameter("id", id)
-            };
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // 1. Удаление записи из PhoneBook
+                        string queryPhoneBook = "DELETE FROM PhoneBook WHERE id = @id";
+                        var parametersPhoneBook = new List<NpgsqlParameter>
+                {
+                    new NpgsqlParameter("id", id)
+                };
+                        ExecuteQueryWithTransaction(queryPhoneBook, parametersPhoneBook, conn, transaction);
 
-            ExecuteQuery(query, parameters);
+                        // 2. Проверка и удаление ненужных значений из справочных таблиц
+                        DeleteFromReferenceTableIfUnused("Surnames", "id", conn, transaction);
+                        DeleteFromReferenceTableIfUnused("Names", "id", conn, transaction);
+                        DeleteFromReferenceTableIfUnused("Otchestva", "id", conn, transaction);
+                        DeleteFromReferenceTableIfUnused("Streets", "id", conn, transaction);
+                        DeleteFromReferenceTableIfUnused("Houses", "id", conn, transaction);
+                        DeleteFromReferenceTableIfUnused("Corps", "id", conn, transaction);
+                        DeleteFromReferenceTableIfUnused("Apartments", "id", conn, transaction);
+                        DeleteFromReferenceTableIfUnused("Phones", "id", conn, transaction);
+
+                        // Завершаем транзакцию
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        // В случае ошибки откатываем изменения
+                        transaction.Rollback();
+                        throw new Exception("Ошибка при удалении записи.", ex);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Выполняет удаление записи из справочной таблицы, если она не используется в других записях PhoneBook.
+        /// </summary>
+        private static void DeleteFromReferenceTableIfUnused(string tableName, string columnName, NpgsqlConnection conn, NpgsqlTransaction transaction)
+        {
+            // Проверяем, используется ли это значение в PhoneBook
+            string checkQuery = $@"
+        SELECT COUNT(*) 
+        FROM PhoneBook pb
+        LEFT JOIN {tableName} t ON pb.{columnName} = t.id
+        WHERE t.id IS NOT NULL";
+
+            using (var cmd = new NpgsqlCommand(checkQuery, conn, transaction))
+            {
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                if (count == 0)
+                {
+                    // Если не используется, удаляем значение из справочной таблицы
+                    string deleteQuery = $"DELETE FROM {tableName} WHERE id = @id";
+                    using (var deleteCmd = new NpgsqlCommand(deleteQuery, conn, transaction))
+                    {
+                        deleteCmd.Parameters.AddWithValue("id", columnName);
+                        deleteCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Выполняет запрос в рамках транзакции для удаления данных.
+        /// </summary>
+        private static void ExecuteQueryWithTransaction(string query, List<NpgsqlParameter> parameters, NpgsqlConnection conn, NpgsqlTransaction transaction)
+        {
+            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.AddRange(parameters.ToArray());
+                cmd.ExecuteNonQuery();
+            }
         }
 
         /// <summary>
         /// Поиск записей в таблице Phonebook по заданным критериям.
         /// </summary>
         public static DataTable FindRecords(string familia, string personName, string otchestvo, string street, string house,
-                                            string korpys, string apartment, string phone)
+                                    string korpys, string apartment, string phone)
         {
-            string query = "SELECT * FROM Phonebook WHERE 1 = 1";
+            string query = @"
+        SELECT 
+            pb.id,
+            s.value AS surname,
+            n.value AS name,
+            o.value AS otchestvo,
+            st.value AS street,
+            h.value AS house,
+            c.value AS korpus,
+            a.value AS apartment,
+            p.value AS phone
+        FROM PhoneBook pb
+        LEFT JOIN Surnames s ON pb.surname_id = s.id
+        LEFT JOIN Names n ON pb.name_id = n.id
+        LEFT JOIN Otchestva o ON pb.patronymic_id = o.id
+        LEFT JOIN Streets st ON pb.street_id = st.id
+        LEFT JOIN Houses h ON pb.house_id = h.id
+        LEFT JOIN Corps c ON pb.korpus_id = c.id
+        LEFT JOIN Apartments a ON pb.apartment_id = a.id
+        LEFT JOIN Phones p ON pb.phone_id = p.id
+        WHERE 1 = 1";
+
             var parameters = new List<NpgsqlParameter>();
 
-            if (!string.IsNullOrWhiteSpace(familia)) { query += " AND famillia ILIKE @familia"; parameters.Add(new NpgsqlParameter("familia", "%" + familia + "%")); }
-            if (!string.IsNullOrWhiteSpace(personName)) { query += " AND person_name ILIKE @personName"; parameters.Add(new NpgsqlParameter("personName", "%" + personName + "%")); }
-            if (!string.IsNullOrWhiteSpace(otchestvo)) { query += " AND otchestvo ILIKE @otchestvo"; parameters.Add(new NpgsqlParameter("otchestvo", "%" + otchestvo + "%")); }
-            if (!string.IsNullOrWhiteSpace(street)) { query += " AND street ILIKE @street"; parameters.Add(new NpgsqlParameter("street", "%" + street + "%")); }
-            if (!string.IsNullOrWhiteSpace(house)) { query += " AND house ILIKE @house"; parameters.Add(new NpgsqlParameter("house", "%" + house + "%")); }
-            if (!string.IsNullOrWhiteSpace(korpys)) { query += " AND korpys ILIKE @korpys"; parameters.Add(new NpgsqlParameter("korpys", "%" + korpys + "%")); }
-            if (!string.IsNullOrWhiteSpace(apartment)) { query += " AND apartment ILIKE @apartment"; parameters.Add(new NpgsqlParameter("apartment", "%" + apartment + "%")); }
-            if (!string.IsNullOrWhiteSpace(phone)) { query += " AND phone ILIKE @phone"; parameters.Add(new NpgsqlParameter("phone", "%" + phone + "%")); }
+            if (!string.IsNullOrWhiteSpace(familia))
+            {
+                query += " AND s.value ILIKE @familia";
+                parameters.Add(new NpgsqlParameter("familia", "%" + familia + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(personName))
+            {
+                query += " AND n.value ILIKE @personName";
+                parameters.Add(new NpgsqlParameter("personName", "%" + personName + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(otchestvo))
+            {
+                query += " AND o.value ILIKE @otchestvo";
+                parameters.Add(new NpgsqlParameter("otchestvo", "%" + otchestvo + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(street))
+            {
+                query += " AND st.value ILIKE @street";
+                parameters.Add(new NpgsqlParameter("street", "%" + street + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(house))
+            {
+                query += " AND h.value ILIKE @house";
+                parameters.Add(new NpgsqlParameter("house", "%" + house + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(korpys))
+            {
+                query += " AND c.value ILIKE @korpus";
+                parameters.Add(new NpgsqlParameter("korpus", "%" + korpys + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(apartment))
+            {
+                query += " AND a.value ILIKE @apartment";
+                parameters.Add(new NpgsqlParameter("apartment", "%" + apartment + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                query += " AND p.value ILIKE @phone";
+                parameters.Add(new NpgsqlParameter("phone", "%" + phone + "%"));
+            }
 
+            // сразу вызываем выполнения запроса и возвращаем результат (таблицу)
             return ExecuteQuery(query, parameters);
         }
+
 
         /// <summary>
         /// Получает все записи из таблицы Phonebook.
