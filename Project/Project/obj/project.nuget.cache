@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "yuomAB8ML3NfgoMGvhvocFX0dzx3twZ0x9XZTqxSa2HX3ba8MWvw+6iK35Bp6n564nwjoo/Tq2Qq7fQCFEecbQ==",
+  "dgSpecHash": "rI7ZgOv1Lp93BXgv1ov84UdrdMBAXDVyvUl76agC8yeHsnWucg1QCSAuFx49llY6NeGj1n+o0g1eIdO8x+CVlQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\KoreshNoyt\\Desktop\\Skleimin\\PgSqlWinForms\\Project\\Project\\Project.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\KoreshNoyt\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\KoreshNoyt\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\KoreshNoyt\\.nuget\\packages\\npgsql\\9.0.2\\npgsql.9.0.2.nupkg.sha512",
+    "C:\\Users\\KoreshNoyt\\.nuget\\packages\\system.diagnostics.diagnosticsource\\8.0.1\\system.diagnostics.diagnosticsource.8.0.1.nupkg.sha512",
+    "C:\\Users\\KoreshNoyt\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\KoreshNoyt\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
+    "C:\\Users\\KoreshNoyt\\.nuget\\packages\\system.text.json\\8.0.5\\system.text.json.8.0.5.nupkg.sha512"
+  ],
   "logs": []
 }
