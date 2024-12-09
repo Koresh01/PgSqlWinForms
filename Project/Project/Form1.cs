@@ -16,11 +16,12 @@ namespace Project
         /// <summary>
         /// Загружает данные на экран.
         /// </summary>
-        private void ShowTable()
+        /// <param name="tableName">Таблица из которой выгружаем данные на экран.</param>
+        private void ShowTable(string tableName = "Phonebook")
         {
             try
             {
-                dataGridView.DataSource = DatabaseManager.GetAllRecords();
+                dataGridView.DataSource = DatabaseManager.GetAllRecords(tableName);
             }
             catch (Exception ex)
             {
@@ -102,73 +103,106 @@ namespace Project
         }
 
         #region Кнопки меню
-        /// <summary>
-        /// 
-        /// </summary>
         private void PhoneBook_BtnClick(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Телефонная книга";
+
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("PhoneBook");
         }
-
-
 
         private void SurnamesBtn_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Фамилии";
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("Surnames");
         }
 
         private void NamesBtn_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Имена";
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("Names");
         }
-        #endregion
 
         private void OtchestvaBtn_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Отчества";
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("Otchestva");
         }
 
         private void StreetsBtn_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Улицы";
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("Streets");
         }
 
         private void HousesBtn_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Дома";
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("Houses");
         }
 
         private void CorpsBtn_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Корпуса";
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("Corps");
         }
 
         private void ApartamentsBtn_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Комнаты";
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("Apartments");
         }
 
         private void TelephoneNumbersBtn_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem obj = sender as ToolStripMenuItem;
 
+            // Меняем название таблички:
             tableNameLabel.Text = "Телефоны";
+
+            // Отрисовываем соответствующую таблицу.
+            ShowTable("Phones");
         }
+
+        #endregion
     }
 }

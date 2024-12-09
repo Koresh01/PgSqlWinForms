@@ -106,9 +106,9 @@ namespace Project
         /// <summary>
         /// Получает все записи из таблицы Phonebook.
         /// </summary>
-        public static DataTable GetAllRecords()
+        public static DataTable GetAllRecords(string tableName)
         {
-            string query = "SELECT * FROM Phonebook";
+            string query = $"SELECT * FROM {tableName}";
             return ExecuteQuery(query);
         }
         #endregion
